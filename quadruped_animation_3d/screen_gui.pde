@@ -2,15 +2,15 @@ class screen_gui
 {
   HScrollbar[] hs = new HScrollbar[11];
   float[] slider_vals = new float[11];
-  String[] labels = new String[]{"torso-pitch","back-right-hip","back-right-knee","back-left-hip",
-                                 "back-left-knee","front-right-hip","front-right-knee","front-left-hip",
-                                 "front-left-knee","CameraX","CameraZ"};
+  String[] labels = new String[]{"torso-pitch","front-left-hip",
+                                 "front-left-knee","front-right-hip","front-right-knee","back-left-hip","back-left-knee","back-right-hip",
+                                 "back-right-knee","CameraX","CameraZ"};
   
   screen_gui()
   {
     for(int i=0;i<9;i++)
     {
-      hs[i] = new HScrollbar(0.8*width, (i+1)*height/20, 180, 8, 4); 
+      hs[i] = new HScrollbar(.8*width,(i+1)*height/20,180,8,4); 
     }
     
     for(int i=0; i<2; i++)
@@ -32,7 +32,7 @@ class screen_gui
       }
       else
       {
-        if (i!=2 && i!=4)
+        if (i!=6 && i!=8)
         {
           slider_vals[i] = hs[i].getPos()-180;
         }
@@ -41,13 +41,13 @@ class screen_gui
           slider_vals[i] = hs[i].getPos();
         }
       }
-      if (i!=2 && i!=4)
+      if (i!=6 && i!=8)
       {
-        text((slider_vals[i]+90),0.95*width,(i+1)*height/20);
+        text(round(slider_vals[i]+90),0.95*width,(i+1)*height/20);
       }
       else
       {
-        text((slider_vals[i]-90),0.95*width,(i+1)*height/20);
+        text(round(slider_vals[i]-90),0.95*width,(i+1)*height/20);
       }      
     }
  
@@ -57,8 +57,8 @@ class screen_gui
      hs[i+9].update();
      hs[i+9].display();
      slider_vals[i+9] = hs[i+9].getPos()-90;
-     text(slider_vals[i+9],0.3*width,(i+1)*height/20);
-   }   
+     text(round(slider_vals[i+9]),0.3*width,(i+1)*height/20);
+   }
   }
   
   float[] get_slider_pos()
