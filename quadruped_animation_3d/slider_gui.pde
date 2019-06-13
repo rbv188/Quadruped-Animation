@@ -23,7 +23,6 @@ class HScrollbar {
   }
 
   void update(boolean Real_life_Update_needed, float Angle_difference) {
-    //prioirty to update by orientation changes is given over update by dragging the slider..might need to be changed depending on whether Arduino prioirtises the serial port or the IR channel
     if (overEvent()) {
       over = true;
     } else {
@@ -39,11 +38,11 @@ class HScrollbar {
       newspos = constrain(mouseX-sheight/2, sposMin, sposMax);
     }
     else if(Real_life_Update_needed)
-    {
-      print("Angle_difference "+Angle_difference);
+    {/*
+    if the slider value needs to be changed, this will take care of that..right now only works with the the pitch
+    */
       newspos = constrain((sposMin+sposMax)/2-Angle_difference, sposMin, sposMax);
     }
-    
     if (abs(newspos - spos) > 1) {
       spos = spos + (newspos-spos)/loose;
     }

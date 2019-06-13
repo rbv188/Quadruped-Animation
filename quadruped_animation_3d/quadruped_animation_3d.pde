@@ -4,7 +4,7 @@ Serial myPort;
 robot new_robot;
 screen_gui GUI;
 
-float[] orientation_matrix=new float[1];
+float[] orientation_matrix=new float[1];//Right now only one slider (pitch) is to be updated by reading from the serial port
 
 float[] slider_vals = new float[12];
 double[][] Angle_Matrix = new double[10][3];
@@ -102,25 +102,17 @@ void serialEvent()
   } while (message != null);
 }
 
-
+/*
+Will return a list of sliders_(number,values)_pairs to be updated. Currently only operates on one pair for the pitch
+*/
 float[][] OrientationCalculator()
 {
-  ArrayList<float[]> New_angles=new ArrayList<float[]>();
+  float new_angles[][]=new float[orientation_matrix.length][2];
   
   for(int i=0;i<orientation_matrix.length;i++)
   {
-    float[] adden={i,orientation_matrix[0]};
-    {New_angles.add(adden);}
+    new_angles[i][0]=i;
+    new_angles[i][1]=orientation_matrix[i];
   }
-  
-
-  //dont know whether if the output format is right
-  float new_angles[][]=new float[New_angles.size()][2];
-  new_angles=New_angles.toArray(new_angles);
-  
-  println("OrientationCalculator start");
-  for(int i=0;i<New_angles.size();i++)  
-  {printArray(new_angles[i]);}
-  println("SHould be something above");
   return new_angles;
 }
