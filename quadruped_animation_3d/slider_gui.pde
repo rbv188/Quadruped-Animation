@@ -43,7 +43,7 @@ class HScrollbar {
     */
       newspos = constrain((sposMin+sposMax)/2-Angle_difference, sposMin, sposMax);
     }
-    if (abs(newspos - spos) > 1) {
+    if (abs(newspos - spos) >= 0) {
       spos = spos + (newspos-spos)/loose;
     }
   }
