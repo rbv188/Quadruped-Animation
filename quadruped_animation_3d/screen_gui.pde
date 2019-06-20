@@ -19,21 +19,22 @@ class screen_gui
     }
   }
 
-  void update_sliders(float[][] list_pair_joint_angles_to_be_updated)
+  void update_sliders(float[] list_pair_joint_angles_to_be_updated)
   {
+    int x;
     for(int i=0;i<9;i++)
     {
       text(labels[i],0.7*width,(i+1)*height/20);
       if (i==0||i==1)
-      {hs[i].update(true,list_pair_joint_angles_to_be_updated[i][1]);}
+      {if(hs[i].update(true,list_pair_joint_angles_to_be_updated[i])) x=i;}
       else if(i==3||i==5||i==8)
-      {      hs[i].update(true,list_pair_joint_angles_to_be_updated[i-1][1]);}
+      {if(hs[i].update(true,list_pair_joint_angles_to_be_updated[i-1])) x=i;}
       else if(i==4||i==6)
-      {      hs[i].update(true,list_pair_joint_angles_to_be_updated[i+2][1]);}
+      { if(     hs[i].update(true,list_pair_joint_angles_to_be_updated[i+2])) x=i;}
       else if(i==2)
-      {      hs[i].update(true,list_pair_joint_angles_to_be_updated[i+3][1]);}      
+      {   if(   hs[i].update(true,list_pair_joint_angles_to_be_updated[i+3])) x=i;}      
       else if(i==7)
-      {      hs[i].update(true,list_pair_joint_angles_to_be_updated[i-4][1]);}
+      {   if(   hs[i].update(true,list_pair_joint_angles_to_be_updated[i-4])) x=i;}
 
       hs[i].display();
       if (i==0)
@@ -73,6 +74,7 @@ class screen_gui
      slider_vals[i+9] = hs[i+9].getPos()-90;
      text(round(slider_vals[i+9]),0.3*width,(i+1)*height/20);
    }
+//   return x;
   }
   
   float[] get_slider_pos()

@@ -22,7 +22,7 @@ class HScrollbar {
     loose = l;
   }
 
-  void update(boolean Real_life_Update_needed, float Angle_difference) {
+  boolean update(boolean Real_life_Update_needed,float Angle_difference) {
     if (overEvent()) {
       over = true;
     } else {
@@ -43,9 +43,11 @@ class HScrollbar {
     */
       newspos = constrain((sposMin+sposMax)/2-Angle_difference, sposMin, sposMax);
     }
-    if (abs(newspos - spos) >= 0) {
+    //if (abs(newspos - spos) >= 0) {
       spos = spos + (newspos-spos)/loose;
-    }
+//    }
+if (locked){return true;}
+else{return false;}
   }
 
   float constrain(float val, float minv, float maxv) {
