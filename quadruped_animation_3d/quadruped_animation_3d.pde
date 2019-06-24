@@ -6,11 +6,14 @@ screen_gui GUI;
 int boot_delay_passed=0;
 boolean bigger_angles_detected=false;
 float[] orientation_matrix=new float[9];//Right now only one slider (pitch) is to be updated by reading from the serial port
+float[] old_orientations=new float[4];
 
 float[] slider_vals = new float[11];
 double[][] Angle_Matrix = new double[10][3];
 byte[]update=new byte[18];//This array will be passed by the serial port to the cat. It will store commands of type i.
 
+//float[] pitch_memory=new float[50];
+//int pitch_memory_pointer;
 void setup() {
   size(1280, 768, P3D);
   new_robot = new robot(200.0d, 100.0d, 90.0d, 100.0d);
@@ -32,7 +35,6 @@ void setup() {
 
 void draw()
 {
-//  for(int i=2;i<17;i+=2){System.out.println("update[i] "+i+" "+update[i]);}
   background(100);
   stroke(255);
   lights();
@@ -54,7 +56,6 @@ void draw()
   
   if(boot_delay_passed==500){bigger_angles_detected=true;}
   boot_delay_passed+=1;
-  
   if(!bigger_angles_detected)
   {
     myPort.write(update);
@@ -89,81 +90,37 @@ Reads string from the serial port to extract new updated positions
  */
 void serialEvent()
 {
-  int x=0;
   String message;
-  char inByte = (char) myPort.read();
-  while (myPort.available()>0 && x < 1)
+  byte[] message1;
+  char inByte;
+  int x=0;
+  while (myPort.available()>0&&x!=1)
   {
     inByte = (char) myPort.read();
-    if (inByte=='g')
-    {
-      message = myPort.readStringUntil('\n');
-      if (message!=null)
-      {
+    message = myPort.readStringUntil('\n');
+    if (inByte=='g'&&message!=null)
+      {        
         String[] list = split(trim(message), " ");
-        orientation_matrix[0] = float(list[0]);
+        if(list.length==1)
+        {
+          orientation_matrix[0] = float(list[0]);
+          x++;
+        }
+      }
+  }
+  inByte='y';
+  x=0;
+  while (myPort.available()>0&&((x==0)||(x>0&&inByte!='g')))
+  {
+    inByte = (char) myPort.read();
+    if (inByte=='m')
+    {
+      message1 = myPort.readBytesUntil('~');
+      if (message1!=null&&message1.length==3)
+      {
+        {orientation_matrix[message1[0]-7] = byte(-1*message1[1]);}
         x++;
       }
     }
   }
-  
-  while (myPort.available()>0 && x < 2)
-  {
-    inByte = (char) myPort.read();
-    if (inByte=='l')
-    {
-      message = myPort.readStringUntil('~');
-      if (message!=null&&message.length()==9)
-      {
-        for (int i=1; i<9; i++)
-      {orientation_matrix[i] = byte(message.charAt(i-1));}
-        for (int i=0; i<9; i++)
-      {println("i "+i+" orientation_matrix[i] "+orientation_matrix[i]);}
-        x++;}
-    }
-  }
-  myPort.clear();
 }
-
-
-  //int newLine = 13; // new line character in ASCII
-  //String message;
-  //do {
-  //  message = myPort.readStringUntil(newLine); // read from port until new line
-  //  if (message != null) {
-  //    String[] list = split(trim(message), " ");
-  //    if (list.length == 10 && list[0].equals("g")) {
-  //      for (int i=0; i<9; i++)
-  //      {
-  //        orientation_matrix[i] = float(list[i+1]);
-  //        System.out.println("i "+i+" "+list[i+1]+" "+orientation_matrix[i]);
-  //        if(i!=0&&abs(orientation_matrix[i])>2&&boot_delay_passed>600)
-  //        {bigger_angles_detected=true;}
-  //      }
-  //      if(bigger_angles_detected)
-  //      {System.exit(0);}
-  //    }
-  //  }
-  //} while (message != null);
-
-
-
-
-
-
-
-
-/*
-Will return a list of sliders_(number,values)_pairs to be updated. Currently only operates on one pair for the pitch
-*/
-//float[][] OrientationCalculator()
-//{
-//  float new_angles[][]=new float[orientation_matrix.length][2];
-
-//  for (int i=0; i<orientation_matrix.length; i++)
-//  {
-//    new_angles[i][0]=i;
-//    new_angles[i][1]=orientation_matrix[i];
-//  }
-//  return new_angles;
-//}

@@ -25,6 +25,8 @@ class screen_gui
     for(int i=0;i<9;i++)
     {
       text(labels[i],0.7*width,(i+1)*height/20);
+      
+      //the slider shifters seem to be correct
       if (i==0||i==1)
       {if(hs[i].update(true,list_pair_joint_angles_to_be_updated[i])) x=i;}
       else if(i==3||i==5||i==8)
