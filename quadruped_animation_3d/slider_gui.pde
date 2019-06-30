@@ -18,11 +18,11 @@ class HScrollbar {
     spos = xpos + swidth/2;
     newspos = spos;
     sposMin = xpos;
-    sposMax = xpos + swidth - sheight;
+    sposMax = xpos + swidth - sheight/2;
     loose = l;
   }
 
-  void update() {
+  boolean update(boolean Real_life_Update_needed,float Angle_difference) {
     if (overEvent()) {
       over = true;
     } else {
@@ -31,20 +31,30 @@ class HScrollbar {
     if (mousePressed && over) {
       locked = true;
     }
-    if (!mousePressed) {
+    else if (!mousePressed) {
       locked = false;
     }
     if (locked) {
       newspos = constrain(mouseX-sheight/2, sposMin, sposMax);
     }
-    if (abs(newspos - spos) > 1) {
-      spos = spos + (newspos-spos)/loose;
+    else if(Real_life_Update_needed)
+    {/*
+    if the slider value needs to be changed, this will take care of that..right now only works with the the pitch
+    */
+      newspos = constrain((sposMin+sposMax)/2-Angle_difference, sposMin, sposMax);
     }
+    //if (abs(newspos - spos) >= 0) {
+      spos = spos + (newspos-spos)/loose;
+//    }
+if (locked){return true;}
+else{return false;}
   }
 
   float constrain(float val, float minv, float maxv) {
     return min(max(val, minv), maxv);
   }
+
+
 
   boolean overEvent() {
     if (mouseX > xpos && mouseX < xpos+swidth &&
@@ -65,7 +75,6 @@ class HScrollbar {
       fill(102, 102, 102);
     }
     rect(spos, ypos, sheight, sheight);
-    ////
     fill(204);
   }
 
