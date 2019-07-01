@@ -68,7 +68,7 @@ class screen_gui
       }
     }
      
-    for(int i=0;i<2;i++)
+   for(int i=0;i<2;i++)
    {
      text(labels[i+9],0.01*width,(i+1)*height/20);
      hs[i+9].update(false,500);
