@@ -14,7 +14,7 @@ class screen_gui
     for(int i=0; i<2; i++) {hs[i+9] = new HScrollbar(0.1*width, (i+1)*height/20, 180, 8, 4);}
   }
 
-  int update_sliders(float[] list_pair_joint_angles_to_be_updated)
+  int update_sliders(float[] list_pair_joint_angles_to_be_updated)//y is supposed to be a boolean here to tell that the bars have been modified by a human
   {
     Update_neeeded=0;
     for(int i=0;i<9;i++)
@@ -26,8 +26,8 @@ class screen_gui
       else if(i==2) {displacement=3;}      
       else if(i==7) {displacement=-4;}
       int y=hs[i].update(true,list_pair_joint_angles_to_be_updated[i+displacement]);
-      if(Update_neeeded!=1) Update_neeeded=y;
-      
+      if(Update_neeeded!=1) {Update_neeeded=y;}//the conditional to make sure that once the Update_needed becomes a 1 it can't be reverted back. 
+
       if (i==0) {slider_vals[i] = hs[i].getPos()-90;}
       else {if (i!=6 && i!=8) {slider_vals[i] = hs[i].getPos()-180;}
             else {slider_vals[i] = hs[i].getPos();}}

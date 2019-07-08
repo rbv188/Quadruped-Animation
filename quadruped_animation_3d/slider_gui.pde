@@ -44,7 +44,6 @@ class HScrollbar {
       newspos = constrain((sposMin+sposMax)/2-Angle_difference, sposMin, sposMax);
     }
     if (abs(newspos - spos) > 0.00025){// && abs(newspos - spos)<0.0002) {
-      println("Interesting place reached");
       spos = newspos;//spos + (newspos-spos)/loose;
     }
     return locked?1:0;
