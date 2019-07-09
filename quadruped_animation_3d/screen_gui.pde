@@ -39,11 +39,11 @@ class screen_gui
      
    for(int i=0;i<2;i++)
    {
-     text(labels[i+9],0.01*width,(i+1)*height/20);
+//     text(labels[i+9],0.01*width,(i+1)*height/20);
      hs[i+9].update(false,500);
-     hs[i+9].display();
+  //   hs[i+9].display();
      slider_vals[i+9] = hs[i+9].getPos()-90;
-     text(round(slider_vals[i+9]),0.3*width,(i+1)*height/20);
+    // text(round(slider_vals[i+9]),0.3*width,(i+1)*height/20);
    }
    return Update_neeeded;
   }
